@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:macros_app/src/features/home/domain/model/food_model.dart';
+import 'package:macros_app/src/features/home/domain/model/item_model.dart';
 import 'package:macros_app/src/features/home/domain/model/meal_model.dart';
 import 'package:macros_app/src/features/home/domain/usecase/meal_usecase.dart';
 import 'package:mobx/mobx.dart';
@@ -11,10 +13,10 @@ abstract class _MealViewmodelBase with Store {
   String? _userToken;
 
   @observable
-  ObservableList<MealModel> meals = <MealModel>[].asObservable();
+  bool isLoading = false;
 
   @observable
-  bool isLoading = false;
+  ObservableList<MealModel> meals = <MealModel>[].asObservable();
 
   @action
   Future<void> setUserToken() async {
@@ -35,7 +37,7 @@ abstract class _MealViewmodelBase with Store {
   @action
   Future<void> getMeals() async {
     isLoading = true;
-    await Future.delayed(Duration(milliseconds: 300));
+    // await Future.delayed(Duration(milliseconds: 300));
 
     try {
       final response = await _usecase.getMeals(_userToken);
@@ -59,49 +61,12 @@ abstract class _MealViewmodelBase with Store {
     try {
       final newMeal = await _usecase.createMeal(_userToken, name, time);
 
-      //incluir ordenado por hora
-      TimeOfDay timeNew = TimeOfDay(
-        hour: newMeal.hour,
-        minute: newMeal.minutes,
-      );
-      var i = 0;
-      bool insert = false;
-      while (i < meals.length) {
-        TimeOfDay thisTime = TimeOfDay(hour: meals[i].hour, minute: meals[i].minutes);
-        
-        if (vemAntes(timeNew, thisTime)) {
-          meals.insert(i, newMeal);
-          insert = true;
-          break;
-        } else {
-          i++;
-        }
-      }
-      if (!insert) {
-        meals.add(newMeal);
-      }
-      //---------------------------------
+      includeMeal(newMeal);
     } catch (e) {
       print(e.toString());
     } finally {
       isLoading = false;
     }
-  }
-
-  bool vemAntes(TimeOfDay h1, TimeOfDay h2) {
-    if (h1.hour == h2.hour) {
-      if (h1.minute < h2.minute) {
-        return true;
-      } else {
-        return false;
-      }
-    }
-
-    if (h1.hour < h2.hour) {
-      return true;
-    }
-
-    return false;
   }
 
   @action
@@ -117,5 +82,46 @@ abstract class _MealViewmodelBase with Store {
     } finally {
       isLoading = false;
     }
+  }
+
+  @action
+  void includeMeal(MealModel newMeal) {
+    TimeOfDay timeNew = TimeOfDay(
+      hour: newMeal.hour,
+      minute: newMeal.minutes,
+    );
+    var i = 0;
+    bool insert = false;
+    while (i < meals.length) {
+      TimeOfDay thisTime =
+          TimeOfDay(hour: meals[i].hour, minute: meals[i].minutes);
+
+      if (isBefore(timeNew, thisTime)) {
+        meals.insert(i, newMeal);
+        insert = true;
+        break;
+      } else {
+        i++;
+      }
+    }
+    if (!insert) {
+      meals.add(newMeal);
+    }
+  }
+
+  bool isBefore(TimeOfDay h1, TimeOfDay h2) {
+    if (h1.hour == h2.hour) {
+      if (h1.minute < h2.minute) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+
+    if (h1.hour < h2.hour) {
+      return true;
+    }
+
+    return false;
   }
 }

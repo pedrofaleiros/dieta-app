@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:macros_app/src/features/home/presentation/viewmodel/meal_viewmodel.dart';
+import 'package:provider/provider.dart';
 
 class AddFoodButton extends StatelessWidget {
   const AddFoodButton({super.key});
@@ -8,7 +10,7 @@ class AddFoodButton extends StatelessWidget {
     return SizedBox(
       width: double.infinity,
       child: TextButton.icon(
-        onPressed: () {
+        onPressed: () async {
           //navigate to add food to meal page
           print('Add food button');
         },

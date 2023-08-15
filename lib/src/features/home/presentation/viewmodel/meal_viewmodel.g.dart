@@ -9,22 +9,6 @@ part of 'meal_viewmodel.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$MealViewmodel on _MealViewmodelBase, Store {
-  late final _$mealsAtom =
-      Atom(name: '_MealViewmodelBase.meals', context: context);
-
-  @override
-  ObservableList<MealModel> get meals {
-    _$mealsAtom.reportRead();
-    return super.meals;
-  }
-
-  @override
-  set meals(ObservableList<MealModel> value) {
-    _$mealsAtom.reportWrite(value, super.meals, () {
-      super.meals = value;
-    });
-  }
-
   late final _$isLoadingAtom =
       Atom(name: '_MealViewmodelBase.isLoading', context: context);
 
@@ -38,6 +22,22 @@ mixin _$MealViewmodel on _MealViewmodelBase, Store {
   set isLoading(bool value) {
     _$isLoadingAtom.reportWrite(value, super.isLoading, () {
       super.isLoading = value;
+    });
+  }
+
+  late final _$mealsAtom =
+      Atom(name: '_MealViewmodelBase.meals', context: context);
+
+  @override
+  ObservableList<MealModel> get meals {
+    _$mealsAtom.reportRead();
+    return super.meals;
+  }
+
+  @override
+  set meals(ObservableList<MealModel> value) {
+    _$mealsAtom.reportWrite(value, super.meals, () {
+      super.meals = value;
     });
   }
 
@@ -73,11 +73,25 @@ mixin _$MealViewmodel on _MealViewmodelBase, Store {
     return _$deleteMealAsyncAction.run(() => super.deleteMeal(mealId));
   }
 
+  late final _$_MealViewmodelBaseActionController =
+      ActionController(name: '_MealViewmodelBase', context: context);
+
+  @override
+  void includeMeal(MealModel newMeal) {
+    final _$actionInfo = _$_MealViewmodelBaseActionController.startAction(
+        name: '_MealViewmodelBase.includeMeal');
+    try {
+      return super.includeMeal(newMeal);
+    } finally {
+      _$_MealViewmodelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
-meals: ${meals},
-isLoading: ${isLoading}
+isLoading: ${isLoading},
+meals: ${meals}
     ''';
   }
 }
