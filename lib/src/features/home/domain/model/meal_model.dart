@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:macros_app/src/features/home/domain/model/food_model.dart';
 import 'package:macros_app/src/features/home/domain/model/item_model.dart';
 
 class MealModel {

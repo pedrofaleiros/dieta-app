@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:macros_app/src/features/auth/domain/model/user_model.dart';
 
 class UserDTO {
   final String email;
@@ -35,7 +34,7 @@ class UserDTO {
   }
 
   bool validatePassword() {
-    if (password.length < 8 || int.tryParse(password) != null) {
+    if (password.length < 8) {
       return false;
     }
 

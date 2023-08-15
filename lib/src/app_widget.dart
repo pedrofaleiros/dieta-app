@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:macros_app/src/features/auth/presentation/view/pages/auth_page.dart';
 import 'package:macros_app/src/features/auth/presentation/viewmodel/auth_viewmodel.dart';
+import 'package:macros_app/src/features/home/presentation/view/pages/create_meal_page.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/home_page.dart';
+import 'package:macros_app/src/features/home/presentation/viewmodel/meal_viewmodel.dart';
 import 'package:macros_app/src/splash_page.dart';
 import 'package:provider/provider.dart';
 
@@ -14,7 +16,10 @@ class AppWidget extends StatelessWidget {
       providers: [
         Provider(
           create: (_) => AuthViewModel(),
-        )
+        ),
+        Provider(
+          create: (_) => MealViewmodel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -24,6 +29,7 @@ class AppWidget extends StatelessWidget {
           SplashPage.routeName: (_) => const SplashPage(),
           HomePage.routeName: (_) => const HomePage(),
           AuthPage.routeName: (_) => const AuthPage(),
+          CreateMealPage.routeName: (_) => const CreateMealPage(),
         },
       ),
     );
@@ -56,12 +62,12 @@ final _theme = ThemeData(
     bodyMedium: TextStyle(
       color: Color(0xfffafafa),
       fontWeight: FontWeight.w400,
-      fontSize: 14,
+      fontSize: 16,
     ),
     bodySmall: TextStyle(
       color: Color(0xfffafafa),
       fontWeight: FontWeight.w400,
-      fontSize: 12,
+      fontSize: 14,
     ),
   ),
   fontFamily: 'rawline',

@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:macros_app/src/features/home/data/dto/meal_dto.dart';
-import 'package:macros_app/src/features/home/domain/model/food_model.dart';
 import 'package:macros_app/src/features/home/domain/model/meal_model.dart';
 import 'package:macros_app/src/features/home/domain/model/not_authorized_exception.dart';
 import 'package:macros_app/src/features/home/domain/repository/meal_repository_interface.dart';
