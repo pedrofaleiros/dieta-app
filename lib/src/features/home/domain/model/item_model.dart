@@ -13,6 +13,18 @@ class ItemModel {
     required this.food,
   });
 
+  ItemModel copyWith({
+    String? id,
+    double? amount,
+    FoodModel? food,
+  }) {
+    return ItemModel(
+      id: id ?? this.id,
+      amount: amount ?? this.amount,
+      food: food ?? this.food,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       'id': id,

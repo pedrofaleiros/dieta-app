@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 
+import '../features/home/domain/model/not_authorized_exception.dart';
+
 class DioClient {
-  static const baseUrl = 'http://localhost:3333';
+  static const baseUrl = 'http://172.30.129.176:3333';
 
   static Dio getDio() {
     final dio = Dio();
@@ -21,5 +23,16 @@ class DioClient {
     };
 
     return dio;
+  }
+
+  static Exception handleDioException(DioException e) {
+    if (e.response != null) {
+      if (e.response!.statusCode == 401) {
+        return NotAuthorizedException('Não autorizado');
+      } else if (e.response!.statusCode == 400) {
+        return Exception('Erro 400');
+      }
+    }
+    return Exception(e.toString());
   }
 }

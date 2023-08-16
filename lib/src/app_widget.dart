@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:macros_app/src/features/auth/presentation/view/pages/auth_page.dart';
 import 'package:macros_app/src/features/auth/presentation/viewmodel/auth_viewmodel.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/create_meal_page.dart';
+import 'package:macros_app/src/features/home/presentation/view/pages/foods_page.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/home_page.dart';
+import 'package:macros_app/src/features/home/presentation/viewmodel/foods_viewmodel.dart';
 import 'package:macros_app/src/features/home/presentation/viewmodel/meal_viewmodel.dart';
 import 'package:macros_app/src/splash_page.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +22,9 @@ class AppWidget extends StatelessWidget {
         Provider(
           create: (_) => MealViewmodel(),
         ),
+        Provider(
+          create: (_) => FoodsViewmodel(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -30,6 +35,7 @@ class AppWidget extends StatelessWidget {
           HomePage.routeName: (_) => const HomePage(),
           AuthPage.routeName: (_) => const AuthPage(),
           CreateMealPage.routeName: (_) => const CreateMealPage(),
+          FoodsPage.routeName: (_) => const FoodsPage(),
         },
       ),
     );

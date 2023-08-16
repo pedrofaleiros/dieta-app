@@ -30,7 +30,8 @@ void main() {
         ],
       };
 
-      final MealModel meal = MealModel.fromMap(map);
+      MealModelConverter converter = MealModelConverter();
+      final MealModel meal = converter.fromMap(map);
 
       final FoodModel food = meal.items[0].food;
       final ItemModel item = meal.items[0];

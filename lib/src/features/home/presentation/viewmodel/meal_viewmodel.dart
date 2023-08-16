@@ -19,12 +19,18 @@ abstract class _MealViewmodelBase with Store {
   ObservableList<MealModel> meals = <MealModel>[].asObservable();
 
   @action
+  Future<void> addFoodToMeal(String mealId, ItemModel item) async {
+    int index = meals.indexWhere((element) => element.id == mealId);
+
+    meals[index].addItem(item);
+  }
+
+  @action
   Future<void> setUserToken() async {
     if (_userToken != null) {
       return;
     }
-    print('chamando setUserToken');
-
+    
     try {
       final token = await _usecase.getToken();
 

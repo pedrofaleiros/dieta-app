@@ -2,14 +2,28 @@ import 'dart:convert';
 
 import 'package:macros_app/src/features/home/domain/model/item_model.dart';
 
-class MealModel {
-  final String id;
-  final String name;
-  final int hour;
-  final int minutes;
-  final List<ItemModel> items;
+import 'package:mobx/mobx.dart';
+part 'meal_model.g.dart';
 
-  MealModel({
+class MealModel = _MealModelBase with _$MealModel;
+
+abstract class _MealModelBase with Store {
+  @observable
+  String id;
+
+  @observable
+  String name;
+
+  @observable
+  int hour;
+
+  @observable
+  int minutes;
+
+  @observable
+  ObservableList<ItemModel> items;
+
+  _MealModelBase({
     required this.id,
     required this.name,
     required this.hour,
@@ -17,34 +31,55 @@ class MealModel {
     required this.items,
   });
 
-  Map<String, dynamic> toMap() {
+  @action
+  void addItem(ItemModel item) {
+    items.add(item);
+  }
+
+  @action
+  void updateItem(String id, double amount) {
+    // items.add(item);
+    for (var element in items) {
+      if (element.id == id) {
+        element = element.copyWith(
+          amount: amount,
+        );
+        return;
+      }
+    }
+  }
+}
+
+class MealModelConverter {
+  Map<String, dynamic> toMap(MealModel meal) {
     return {
-      'id': id,
-      'name': name,
-      'hour': hour,
-      'minutes': minutes,
-      'items': items.map((item) => item.toMap()).toList(),
+      'id': meal.id,
+      'name': meal.name,
+      'hour': meal.hour,
+      'minutes': meal.minutes,
+      'items': meal.items.map((item) => item.toMap()).toList(),
     };
   }
 
-  factory MealModel.fromMap(Map<String, dynamic> map) {
+  MealModel fromMap(Map<String, dynamic> map) {
     return MealModel(
       id: map['id'],
       name: map['name'],
       hour: map['hour'],
       minutes: map['minutes'],
       items: map['items'] == null
-          ? []
+          ? ObservableList<ItemModel>()
           : (map['items'] as List)
               .map((itemMap) => ItemModel.fromMap(itemMap))
-              .toList(),
+              .toList()
+              .asObservable(),
     );
   }
 
-  String toJson() => json.encode(toMap());
+  String toJson(MealModel meal) => json.encode(toMap(meal));
 
-  factory MealModel.fromJson(String jsonData) {
-    return MealModel.fromMap(
+  MealModel fromJson(String jsonData) {
+    return fromMap(
       json.decode(jsonData),
     );
   }

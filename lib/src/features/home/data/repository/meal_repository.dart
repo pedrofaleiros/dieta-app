@@ -6,6 +6,8 @@ import 'package:macros_app/src/features/home/domain/repository/meal_repository_i
 import 'package:macros_app/src/utils/dio_client.dart';
 
 class MealRepository implements IMealRepository {
+  final conv = MealModelConverter();
+
   @override
   Future<MealModel> createMeal(String token, MealDTO newMeal) async {
     final dio = DioClient.getDioWithToken(token);
@@ -21,12 +23,13 @@ class MealRepository implements IMealRepository {
       );
 
       if (response.statusCode == 200) {
-        return MealModel.fromMap(response.data);
+        MealModel meal = conv.fromMap(response.data);
+        return meal;
       } else {
         throw Exception('erro ${response.statusCode}');
       }
     } on DioException catch (e) {
-      throw _handleDioException(e);
+      throw DioClient.handleDioException(e);
     } catch (e) {
       rethrow;
     }
@@ -45,7 +48,7 @@ class MealRepository implements IMealRepository {
         final responseList = <MealModel>[];
 
         for (var i = 0; i < data.length; i++) {
-          MealModel meal = MealModel.fromMap(data[i]);
+          MealModel meal = conv.fromMap(data[i]);
           responseList.add(meal);
         }
 
@@ -54,7 +57,7 @@ class MealRepository implements IMealRepository {
         throw Exception('erro ${response.statusCode}');
       }
     } on DioException catch (e) {
-      throw _handleDioException(e);
+      throw DioClient.handleDioException(e);
     } catch (e) {
       rethrow;
     }
@@ -74,7 +77,7 @@ class MealRepository implements IMealRepository {
         throw Exception('erro ${response.statusCode}');
       }
     } on DioException catch (e) {
-      throw _handleDioException(e);
+      throw DioClient.handleDioException(e);
     } catch (e) {
       rethrow;
     }
@@ -99,25 +102,15 @@ class MealRepository implements IMealRepository {
       );
 
       if (response.statusCode == 200) {
-        return MealModel.fromMap(response.data);
+        MealModel meal = conv.fromMap(response.data);
+        return meal;
       } else {
         throw Exception('erro ${response.statusCode}');
       }
     } on DioException catch (e) {
-      throw _handleDioException(e);
+      throw DioClient.handleDioException(e);
     } catch (e) {
       rethrow;
     }
-  }
-
-  Exception _handleDioException(DioException e) {
-    if (e.response != null) {
-      if (e.response!.statusCode == 401) {
-        return NotAuthorizedException('Não autorizado');
-      } else if (e.response!.statusCode == 400) {
-        return Exception('Erro 400');
-      }
-    }
-    return Exception(e.toString());
   }
 }

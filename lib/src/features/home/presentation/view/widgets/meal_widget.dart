@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:macros_app/src/features/home/domain/model/item_model.dart';
 import 'package:macros_app/src/features/home/presentation/view/widgets/add_food_button.dart';
 import 'package:macros_app/src/features/home/presentation/view/widgets/macros_count_widget.dart';
@@ -17,17 +18,19 @@ class MealWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        MealTitle(meal: meal),
-        for (var item in meal.items) FoodItem(item: item),
-        // const MyDivider(),
-        AddFoodButton(),
-        const MyDivider(),
-        MacrosCountWidget(meal: meal),
-        const MyDivider(),
-      ],
+    return Observer(
+      builder: (_) => Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          MealTitle(meal: meal),
+          for (var item in meal.items) FoodItem(item: item),
+          // const MyDivider(),
+          AddFoodButton(mealId: meal.id),
+          const MyDivider(),
+          MacrosCountWidget(meal: meal),
+          const MyDivider(),
+        ],
+      ),
     );
   }
 }

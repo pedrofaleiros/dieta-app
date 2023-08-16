@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:macros_app/src/features/auth/presentation/viewmodel/auth_viewmodel.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/meals_page.dart';
+import 'package:macros_app/src/features/home/presentation/viewmodel/foods_viewmodel.dart';
 import 'package:macros_app/src/features/home/presentation/viewmodel/meal_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -26,9 +27,17 @@ class _HomePageState extends State<HomePage> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final mealController = context.read<MealViewmodel>();
       await mealController.setUserToken();
-      await mealController.getMeals().then((value) => setState(() {
-            isLoading = false;
-          }));
+
+      await mealController.getMeals().then(
+        (value) async {
+          await context.read<FoodsViewmodel>().setUserToken();
+          setState(
+            () {
+              isLoading = false;
+            },
+          );
+        },
+      );
     });
   }
 

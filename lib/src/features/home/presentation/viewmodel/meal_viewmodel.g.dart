@@ -41,6 +41,15 @@ mixin _$MealViewmodel on _MealViewmodelBase, Store {
     });
   }
 
+  late final _$addFoodToMealAsyncAction =
+      AsyncAction('_MealViewmodelBase.addFoodToMeal', context: context);
+
+  @override
+  Future<void> addFoodToMeal(String mealId, ItemModel item) {
+    return _$addFoodToMealAsyncAction
+        .run(() => super.addFoodToMeal(mealId, item));
+  }
+
   late final _$setUserTokenAsyncAction =
       AsyncAction('_MealViewmodelBase.setUserToken', context: context);
 
