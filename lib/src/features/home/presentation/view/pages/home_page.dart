@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:macros_app/src/features/auth/presentation/viewmodel/auth_viewmodel.dart';
+import 'package:macros_app/src/features/home/presentation/view/pages/foods_page.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/meals_page.dart';
+import 'package:macros_app/src/features/home/presentation/view/pages/stats_page.dart';
 import 'package:macros_app/src/features/home/presentation/viewmodel/foods_viewmodel.dart';
 import 'package:macros_app/src/features/home/presentation/viewmodel/meal_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -44,7 +46,7 @@ class _HomePageState extends State<HomePage> {
   List<Widget> pages = const [
     Placeholder(),
     MealsPage(),
-    Placeholder(),
+    StatsPage(),
   ];
 
   @override

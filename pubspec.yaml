@@ -18,6 +18,8 @@ dependencies:
   flutter_mobx: ^2.0.6+5
   dio: ^5.3.2
 
+  pie_chart: ^5.3.2
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

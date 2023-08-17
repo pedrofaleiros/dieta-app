@@ -37,6 +37,11 @@ abstract class _MealModelBase with Store {
   }
 
   @action
+  void deleteItem(String itemId) {
+    items.removeWhere((element) => element.id == itemId);
+  }
+
+  @action
   void updateItem(String id, double amount) {
     // items.add(item);
     for (var element in items) {

@@ -45,9 +45,17 @@ mixin _$MealViewmodel on _MealViewmodelBase, Store {
       AsyncAction('_MealViewmodelBase.addFoodToMeal', context: context);
 
   @override
-  Future<void> addFoodToMeal(String mealId, ItemModel item) {
+  Future<void> addFoodToMeal(String mealId, FoodModel food, double amount) {
     return _$addFoodToMealAsyncAction
-        .run(() => super.addFoodToMeal(mealId, item));
+        .run(() => super.addFoodToMeal(mealId, food, amount));
+  }
+
+  late final _$deleteItemAsyncAction =
+      AsyncAction('_MealViewmodelBase.deleteItem', context: context);
+
+  @override
+  Future<void> deleteItem(String mealId, String itemId) {
+    return _$deleteItemAsyncAction.run(() => super.deleteItem(mealId, itemId));
   }
 
   late final _$setUserTokenAsyncAction =

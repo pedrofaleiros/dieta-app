@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:macros_app/src/features/home/data/repository/meal_repository.dart';
 import 'package:macros_app/src/features/home/domain/model/exceptions/invalid_token_exception.dart';
+import 'package:macros_app/src/features/home/domain/model/food_model.dart';
+import 'package:macros_app/src/features/home/domain/model/item_model.dart';
 import 'package:macros_app/src/features/home/domain/repository/meal_repository_interface.dart';
 import 'package:macros_app/src/utils/shared_preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,6 +12,40 @@ import '../model/meal_model.dart';
 
 class MealUsecase {
   IMealRepository repository = MealRepository();
+
+  Future<ItemModel> addItem(
+    String mealId,
+    FoodModel food,
+    double amount,
+    String? token,
+  ) async {
+    if (token == null) {
+      throw InvalidTokenException('JWT token invalido');
+    }
+
+    try {
+      final response = await repository.addItem(mealId, food, amount, token);
+
+      return response;
+    } catch (e) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteItem(
+    String itemId,
+    String? token,
+  ) async {
+    if (token == null) {
+      throw InvalidTokenException('JWT token invalido');
+    }
+
+    try {
+      await repository.deleteItem(itemId, token);
+    } catch (e) {
+      rethrow;
+    }
+  }
 
   Future<List<MealModel>> getMeals(String? token) async {
     if (token == null) {

@@ -23,7 +23,7 @@ class MealWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           MealTitle(meal: meal),
-          for (var item in meal.items) FoodItem(item: item),
+          for (var item in meal.items) FoodItem(item: item, mealId: meal.id),
           // const MyDivider(),
           AddFoodButton(mealId: meal.id),
           const MyDivider(),

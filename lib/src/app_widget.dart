@@ -4,6 +4,7 @@ import 'package:macros_app/src/features/auth/presentation/viewmodel/auth_viewmod
 import 'package:macros_app/src/features/home/presentation/view/pages/create_meal_page.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/foods_page.dart';
 import 'package:macros_app/src/features/home/presentation/view/pages/home_page.dart';
+import 'package:macros_app/src/features/home/presentation/view/pages/stats_page.dart';
 import 'package:macros_app/src/features/home/presentation/viewmodel/foods_viewmodel.dart';
 import 'package:macros_app/src/features/home/presentation/viewmodel/meal_viewmodel.dart';
 import 'package:macros_app/src/splash_page.dart';
@@ -35,7 +36,8 @@ class AppWidget extends StatelessWidget {
           HomePage.routeName: (_) => const HomePage(),
           AuthPage.routeName: (_) => const AuthPage(),
           CreateMealPage.routeName: (_) => const CreateMealPage(),
-          FoodsPage.routeName: (_) => const FoodsPage(),
+          FoodsPage.routeName: (_) => FoodsPage(),
+          StatsPage.routeName: (_) => const StatsPage(),
         },
       ),
     );

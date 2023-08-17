@@ -100,6 +100,17 @@ mixin _$MealModel on _MealModelBase, Store {
   }
 
   @override
+  void deleteItem(String itemId) {
+    final _$actionInfo = _$_MealModelBaseActionController.startAction(
+        name: '_MealModelBase.deleteItem');
+    try {
+      return super.deleteItem(itemId);
+    } finally {
+      _$_MealModelBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void updateItem(String id, double amount) {
     final _$actionInfo = _$_MealModelBaseActionController.startAction(
         name: '_MealModelBase.updateItem');

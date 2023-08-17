@@ -19,10 +19,46 @@ abstract class _MealViewmodelBase with Store {
   ObservableList<MealModel> meals = <MealModel>[].asObservable();
 
   @action
-  Future<void> addFoodToMeal(String mealId, ItemModel item) async {
-    int index = meals.indexWhere((element) => element.id == mealId);
+  Future<void> addFoodToMeal(
+    String mealId,
+    FoodModel food,
+    double amount,
+  ) async {
+    isLoading = true;
 
-    meals[index].addItem(item);
+    try {
+      final response = await _usecase.addItem(mealId, food, amount, _userToken);
+
+      int index = meals.indexWhere((element) => element.id == mealId);
+
+      meals[index].addItem(response);
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading = false;
+    }
+  }
+
+  @action
+  Future<void> deleteItem(
+    String mealId,
+    String itemId,
+  ) async {
+    isLoading = true;
+
+    try {
+      await _usecase.deleteItem(itemId, _userToken);
+
+      for (var element in meals) {
+        if (element.id == mealId) {
+          element.deleteItem(itemId);
+        }
+      }
+    } catch (e) {
+      print(e.toString());
+    } finally {
+      isLoading = false;
+    }
   }
 
   @action
@@ -30,7 +66,7 @@ abstract class _MealViewmodelBase with Store {
     if (_userToken != null) {
       return;
     }
-    
+
     try {
       final token = await _usecase.getToken();
 
@@ -88,6 +124,40 @@ abstract class _MealViewmodelBase with Store {
     } finally {
       isLoading = false;
     }
+  }
+
+  @computed
+  Map<String, double> getTotalMacros() {
+    double carb = 0;
+    double prot = 0;
+    double fats = 0;
+
+    for (var meal in meals) {
+      for (var item in meal.items) {
+        carb += item.amount * item.food.carb / 100;
+        prot += item.amount * item.food.prot / 100;
+        fats += item.amount * item.food.fat / 100;
+      }
+    }
+
+    return {
+      "Carboidratos": carb,
+      "Proteinas": prot,
+      "Gorduras": fats,
+    };
+  }
+
+  @computed
+  double getTotalKcals() {
+    double kcal = 0;
+
+    for (var meal in meals) {
+      for (var item in meal.items) {
+        kcal += item.amount * item.food.kcal / 100;
+      }
+    }
+
+    return kcal;
   }
 
   @action

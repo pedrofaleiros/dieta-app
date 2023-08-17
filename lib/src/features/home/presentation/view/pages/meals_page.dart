@@ -14,16 +14,6 @@ class MealsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     Navigator.pushNamed(context, CreateMealPage.routeName);
-      //   },
-      //   backgroundColor: Theme.of(context).colorScheme.primary,
-      //   child: Icon(
-      //     Icons.add,
-      //     color: Theme.of(context).colorScheme.background,
-      //   ),
-      // ),
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: getHomeAppBar(context),
       body: const HomePageContent(),
@@ -33,8 +23,8 @@ class MealsPage extends StatelessWidget {
   AppBar getHomeAppBar(BuildContext context) {
     return AppBar(
       backgroundColor: Theme.of(context).colorScheme.background,
-      shadowColor: Theme.of(context).colorScheme.onBackground,
-      elevation: 1,
+      // shadowColor: Theme.of(context).colorScheme.onBackground,
+      // elevation: 1,
       foregroundColor: Theme.of(context).colorScheme.onBackground,
       title: Text(
         context.read<AuthViewModel>().sessionUser!.name,
