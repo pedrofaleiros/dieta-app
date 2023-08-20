@@ -22,13 +22,13 @@ class MealsPage extends StatelessWidget {
 
   AppBar getHomeAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.primary,
       // shadowColor: Theme.of(context).colorScheme.onBackground,
       // elevation: 1,
-      foregroundColor: Theme.of(context).colorScheme.onBackground,
+      // foregroundColor: Theme.of(context).colorScheme.onBackground,
       title: Text(
         context.read<AuthViewModel>().sessionUser!.name,
-        style: Theme.of(context).textTheme.bodyLarge,
+        // style: Theme.of(context).textTheme.bodyLarge,
       ),
       actions: [
         IconButton(
@@ -38,6 +38,13 @@ class MealsPage extends StatelessWidget {
             Navigator.pushNamed(context, CreateMealPage.routeName);
           },
           icon: const Icon(Icons.add),
+        ),
+        IconButton(
+          tooltip: 'Sair',
+          onPressed: () => context.read<AuthViewModel>().logout(),
+          icon: const Icon(
+            Icons.logout,
+          ),
         ),
       ],
     );

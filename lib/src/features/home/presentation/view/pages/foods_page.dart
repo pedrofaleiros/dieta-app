@@ -21,6 +21,44 @@ class FoodsPage extends StatelessWidget {
 
   TextEditingController amountController = TextEditingController();
 
+  Future<void> _addItem(dynamic response, BuildContext context, String mealId,
+      FoodModel food) async {
+    if (response == null) return;
+
+    if (response) {
+      await context
+          .read<MealViewmodel>()
+          .addFoodToMeal(
+            mealId,
+            food,
+            double.tryParse(amountController.text) ?? 0,
+          )
+          .then((value) => Navigator.pop(context));
+    }
+  }
+
+  Future<void> _showDialog(
+      BuildContext context, String mealId, FoodModel food) async {
+    amountController.clear();
+    await showDialog(
+      context: context,
+      builder: (context) {
+        return _amountDialog(
+          context,
+          mealId,
+          food,
+        );
+      },
+    ).then(
+      (res) => _addItem(
+        res,
+        context,
+        mealId,
+        food,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final response = ModalRoute.of(context)!.settings.arguments;
@@ -46,17 +84,7 @@ class FoodsPage extends StatelessWidget {
         ),
       ),
       backgroundColor: Theme.of(context).colorScheme.background,
-      appBar: AppBar(
-        backgroundColor: mealId == null
-            ? Theme.of(context).colorScheme.background
-            : Theme.of(context).colorScheme.primary,
-        foregroundColor: mealId == null
-            ? Theme.of(context).colorScheme.onBackground
-            : Theme.of(context).colorScheme.background,
-        title: mealId == null
-            ? const Text('Alimentos')
-            : const Text('Adicionar alimento'),
-      ),
+      appBar: _getAppBar(mealId, context),
       body: FutureBuilder(
         future: controller.getFoods(),
         builder: (context, snapshot) {
@@ -67,36 +95,57 @@ class FoodsPage extends StatelessWidget {
           return Observer(
             builder: (context) => Column(
               children: [
-                const SearchTextField(),
-                controller.foods.isEmpty
-                    ? const Text('Sem resultados')
-                    : Expanded(
-                        child: ListView.separated(
-                          separatorBuilder: (context, index) =>
-                              const MyDivider(),
-                          itemCount: controller.foods.length,
-                          itemBuilder: (context, index) => OutlinedButton(
-                            onPressed: mealId == null
-                                ? null
-                                : () {
-                                    amountController.clear();
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return _amountDialog(
-                                          context,
-                                          mealId,
-                                          controller.foods[index],
-                                        );
-                                      },
-                                    );
-                                  },
-                            child: FoodListItem(
-                              food: controller.foods[index],
-                            ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    onChanged: (value) async {
+                      await context.read<FoodsViewmodel>().searchFoods(value);
+                    },
+                    onEditingComplete:
+                        mealId == null && controller.foods.isNotEmpty
+                            ? null
+                            : () async => _showDialog(
+                                  context,
+                                  mealId!,
+                                  controller.foods[0],
+                                ),
+                    style: Theme.of(context).textTheme.bodySmall,
+                    decoration: InputDecoration(
+                      filled: true,
+                      labelText: 'Pesquise',
+                      fillColor: Theme.of(context).colorScheme.surface,
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                if (controller.foods.isEmpty)
+                  const Text('Sem resultados')
+                else
+                  Expanded(
+                    child:
+                        NotificationListener<OverscrollIndicatorNotification>(
+                      onNotification: (notification) {
+                        notification.disallowIndicator();
+                        return true;
+                      },
+                      child: ListView.separated(
+                        separatorBuilder: (context, index) => const MyDivider(),
+                        itemCount: controller.foods.length,
+                        itemBuilder: (context, index) => OutlinedButton(
+                          onPressed: mealId == null
+                              ? null
+                              : () async => _showDialog(
+                                    context,
+                                    mealId!,
+                                    controller.foods[index],
+                                  ),
+                          child: FoodListItem(
+                            food: controller.foods[index],
                           ),
                         ),
                       ),
+                    ),
+                  ),
               ],
             ),
           );
@@ -105,69 +154,66 @@ class FoodsPage extends StatelessWidget {
     );
   }
 
+  AppBar _getAppBar(String? mealId, BuildContext context) {
+    return AppBar(
+      backgroundColor: mealId == null
+          ? Theme.of(context).colorScheme.background
+          : Theme.of(context).colorScheme.primary,
+      foregroundColor: mealId == null
+          ? Theme.of(context).colorScheme.onBackground
+          : Theme.of(context).colorScheme.background,
+      title: mealId == null
+          ? const Text('Alimentos')
+          : const Text('Adicionar alimento'),
+    );
+  }
+
   AlertDialog _amountDialog(
       BuildContext context, String? mealId, FoodModel food) {
+    final FocusNode focus = FocusNode();
+
+    FocusScope.of(context).requestFocus(focus);
+
     return AlertDialog(
       backgroundColor: Theme.of(context).colorScheme.outline,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            child: Text(
-              food.name,
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          const SizedBox(height: 15),
-          TextField(
-            keyboardType: TextInputType.number,
-            style: Theme.of(context).textTheme.bodySmall,
-            controller: amountController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Quantidade',
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.surface,
-            ),
-          ),
-          const SizedBox(height: 15),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStatePropertyAll(
-                  Theme.of(context).colorScheme.primary,
-                ),
-              ),
-              onPressed: () async {
-                if (double.tryParse(amountController.text) == null) {
-                  return;
-                }
-                double amount = double.parse(amountController.text);
-                await context
-                    .read<MealViewmodel>()
-                    .addFoodToMeal(
-                      mealId!,
-                      food,
-                      amount,
-                    )
-                    .then(
-                      (value) => Navigator.pushNamedAndRemoveUntil(
-                        context,
-                        HomePage.routeName,
-                        (Route<dynamic> route) => false,
-                      ),
-                    );
-              },
-              child: Text(
-                'Adicionar',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-          ),
-        ],
+      title: Text(
+        food.name,
+        style: Theme.of(context).textTheme.bodyMedium,
       ),
+      content: TextField(
+        focusNode: focus,
+        onEditingComplete: () async {
+          if (double.tryParse(amountController.text) == null) {
+            Navigator.pop(context, false);
+            return;
+          }
+          Navigator.pop(context, true);
+        },
+        keyboardType: TextInputType.number,
+        style: Theme.of(context).textTheme.bodySmall,
+        controller: amountController,
+        decoration: InputDecoration(
+          border: OutlineInputBorder(),
+          labelText: 'Quantidade',
+          filled: true,
+          fillColor: Theme.of(context).colorScheme.surface,
+        ),
+      ),
+      actionsAlignment: MainAxisAlignment.end,
+      actions: [
+        TextButton(
+          onPressed: () async {
+            if (double.tryParse(amountController.text) == null) {
+              Navigator.pop(context, false);
+              return;
+            }
+            Navigator.pop(context, true);
+          },
+          child: const Text(
+            'ADICIONAR',
+          ),
+        ),
+      ],
     );
   }
 }

@@ -20,7 +20,7 @@ class MealBottomSheet extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         const TopWidget(),
-        const SizedBox(height: 20),
+        const SizedBox(height: 5),
         Text(
           meal.name,
           style: const TextStyle(
@@ -28,9 +28,9 @@ class MealBottomSheet extends StatelessWidget {
             fontSize: 16,
           ),
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 20),
+        const MyDivider(),
         DeleteMealButton(mealId: meal.id),
-        const SizedBox(height: 5),
         const MyDivider(),
         const BottomWidget(),
       ],

@@ -27,7 +27,7 @@ class MealTitle extends StatelessWidget {
               child: Text(
                 meal.name,
                 softWrap: true, // Garante que o texto será quebrado
-                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                style: Theme.of(context).textTheme.bodyMedium!.copyWith(
                       fontWeight: FontWeight.bold,
                     ),
               ),

@@ -22,12 +22,12 @@ class BottomWidget extends StatelessWidget {
               ),
             ),
             child: Padding(
-              padding: EdgeInsets.only(bottom: 12, top: 12),
+              padding: const EdgeInsets.only(bottom: 4, top: 4),
               child: Text(
                 'Cancelar',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.error,
-                  fontWeight: FontWeight.bold,
+                  // fontWeight: FontWeight.bold,
                   fontSize: 16,
                 ),
               ),

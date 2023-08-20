@@ -4,7 +4,7 @@ import 'package:macros_app/src/features/home/domain/model/item_model.dart';
 import 'package:macros_app/src/features/home/domain/model/meal_model.dart';
 import 'package:macros_app/src/features/home/domain/usecase/meal_usecase.dart';
 import 'package:mobx/mobx.dart';
-part 'meal_viewmodel.g.dart';
+part 'meal_viewmodel.g.dart'; 
 
 class MealViewmodel = _MealViewmodelBase with _$MealViewmodel;
 
@@ -126,7 +126,7 @@ abstract class _MealViewmodelBase with Store {
     }
   }
 
-  @computed
+  // @computed
   Map<String, double> getTotalMacros() {
     double carb = 0;
     double prot = 0;
@@ -147,7 +147,7 @@ abstract class _MealViewmodelBase with Store {
     };
   }
 
-  @computed
+  // @computed
   double getTotalKcals() {
     double kcal = 0;
 

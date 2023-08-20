@@ -13,9 +13,9 @@ class AddFoodButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
+      height: 40,
       child: TextButton.icon(
         onPressed: () async {
-          //navigate to add food to meal page
           Navigator.pushNamed(
             context,
             FoodsPage.routeName,

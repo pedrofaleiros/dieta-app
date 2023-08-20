@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:macros_app/src/features/home/data/repository/meal_repository.dart';
+import 'package:macros_app/src/features/home/data/repository/meal_repository/create_meal_repository.dart';
+import 'package:macros_app/src/features/home/data/repository/meal_repository/delete_meal_repository.dart';
+import 'package:macros_app/src/features/home/data/repository/meal_repository/get_meals_repository.dart';
 import 'package:macros_app/src/features/home/domain/model/exceptions/invalid_token_exception.dart';
 import 'package:macros_app/src/features/home/domain/model/food_model.dart';
 import 'package:macros_app/src/features/home/domain/model/item_model.dart';
-import 'package:macros_app/src/features/home/domain/repository/meal_repository_interface.dart';
 import 'package:macros_app/src/utils/shared_preferences_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -11,7 +13,7 @@ import '../../data/dto/meal_dto.dart';
 import '../model/meal_model.dart';
 
 class MealUsecase {
-  IMealRepository repository = MealRepository();
+  MealRepository repository = MealRepository();
 
   Future<ItemModel> addItem(
     String mealId,
@@ -53,7 +55,12 @@ class MealUsecase {
     }
 
     try {
-      final response = await repository.getMeals(token);
+      final repo = GetMealsRepository();
+      final response = await repo.execute(
+        body: null,
+        queryParams: null,
+        token: token,
+      );
 
       return response;
     } catch (e) {
@@ -77,7 +84,12 @@ class MealUsecase {
     );
 
     try {
-      final response = await repository.createMeal(token, newMeal);
+      final repo = CreateMealRepository();
+      final response = await repo.execute(
+        body: newMeal.toMap(),
+        queryParams: null,
+        token: token,
+      );
 
       return response;
     } catch (e) {
@@ -96,7 +108,12 @@ class MealUsecase {
     }
 
     try {
-      final response = await repository.deleteMeal(token, mealId);
+      final repo = DeleteMealRepository();
+      await repo.execute(
+        body: null,
+        queryParams: {"meal_id": mealId},
+        token: token,
+      );
     } catch (e) {
       rethrow;
     }

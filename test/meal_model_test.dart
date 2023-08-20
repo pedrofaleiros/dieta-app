@@ -1,4 +1,5 @@
 // meal_model_test.dart
+import 'package:macros_app/src/features/home/domain/model/converter/meal_model_converter.dart';
 import 'package:test/test.dart';
 import 'package:macros_app/src/features/home/domain/model/food_model.dart';
 import 'package:macros_app/src/features/home/domain/model/meal_model.dart';
@@ -31,7 +32,7 @@ void main() {
       };
 
       MealModelConverter converter = MealModelConverter();
-      final MealModel meal = converter.fromMap(map);
+      final MealModel meal = converter.fromMap(map) as MealModel;
 
       final FoodModel food = meal.items[0].food;
       final ItemModel item = meal.items[0];

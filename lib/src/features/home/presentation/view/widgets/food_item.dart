@@ -55,6 +55,7 @@ class FoodItem extends StatelessWidget {
       background: _dismissBackground(context),
       child: Column(
         children: [
+          const SizedBox(height: 4),
           Padding(
             padding:
                 const EdgeInsets.only(left: 8.0, right: 8, top: 0, bottom: 0),
@@ -114,6 +115,7 @@ class FoodItem extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 4),
           const MyDivider()
         ],
       ),

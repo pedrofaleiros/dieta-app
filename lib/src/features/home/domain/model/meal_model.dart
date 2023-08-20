@@ -54,38 +54,3 @@ abstract class _MealModelBase with Store {
     }
   }
 }
-
-class MealModelConverter {
-  Map<String, dynamic> toMap(MealModel meal) {
-    return {
-      'id': meal.id,
-      'name': meal.name,
-      'hour': meal.hour,
-      'minutes': meal.minutes,
-      'items': meal.items.map((item) => item.toMap()).toList(),
-    };
-  }
-
-  MealModel fromMap(Map<String, dynamic> map) {
-    return MealModel(
-      id: map['id'],
-      name: map['name'],
-      hour: map['hour'],
-      minutes: map['minutes'],
-      items: map['items'] == null
-          ? ObservableList<ItemModel>()
-          : (map['items'] as List)
-              .map((itemMap) => ItemModel.fromMap(itemMap))
-              .toList()
-              .asObservable(),
-    );
-  }
-
-  String toJson(MealModel meal) => json.encode(toMap(meal));
-
-  MealModel fromJson(String jsonData) {
-    return fromMap(
-      json.decode(jsonData),
-    );
-  }
-}
