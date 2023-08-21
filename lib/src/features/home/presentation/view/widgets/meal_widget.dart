@@ -24,7 +24,6 @@ class MealWidget extends StatelessWidget {
         children: [
           MealTitle(meal: meal),
           for (var item in meal.items) FoodItem(item: item, mealId: meal.id),
-          // const MyDivider(),
           AddFoodButton(mealId: meal.id),
           const MyDivider(),
           MacrosCountWidget(meal: meal),

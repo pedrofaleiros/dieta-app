@@ -63,6 +63,7 @@ class LastItem extends StatelessWidget {
     return Column(
       children: [
         MealWidget(meal: meal),
+        StatsTopWidget(),
         Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -74,7 +75,7 @@ class LastItem extends StatelessWidget {
               ],
             ),
           ),
-          height: 250,
+          height: 200,
         ),
       ],
     );

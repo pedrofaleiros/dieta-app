@@ -5,27 +5,67 @@ import 'package:pie_chart/pie_chart.dart';
 import 'package:provider/provider.dart';
 
 class StatsTopWidget extends StatelessWidget {
-  StatsTopWidget({super.key});
+  const StatsTopWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     final controller = context.watch<MealViewmodel>();
+    int kcal = controller.getTotalKcals().toInt();
+    Map<String, double> data = controller.getTotalMacros();
 
-    return Observer(
-      builder: (_) => Column(
-        children: [
-          PieChart(
-            chartRadius: 150,
-            dataMap: controller.getTotalMacros(),
-            colorList: [
-              Theme.of(context).colorScheme.error,
-              Color(0xff1565C0),
-              Colors.amber,
-            ],
+    var colorList = [
+      const Color(0xff1565C0),
+      Theme.of(context).colorScheme.error,
+      Colors.amber,
+    ];
+    return Column(
+      children: [
+        PieChart(
+          legendOptions: const LegendOptions(
+            showLegends: false,
           ),
-          // Text(controller.getTotalKcals().toString()),
-        ],
-      ),
+          chartRadius: 150,
+          dataMap: data,
+          colorList: colorList,
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "Carboidratos: ${data['Carboidratos']!.toInt()} g",
+              style: TextStyle(
+                color: colorList[1],
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              "Proteínas: ${data['Proteinas']!.toInt()} g",
+              style: TextStyle(
+                color: colorList[0],
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              "Gorduras: ${data['Gorduras']!.toInt()} g",
+              style: TextStyle(
+                color: colorList[2],
+                fontWeight: FontWeight.bold,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+        Text(
+          "$kcal Kcals",
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.primary,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+      ],
     );
   }
 }

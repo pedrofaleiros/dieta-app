@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 import '../features/home/domain/model/exceptions/not_authorized_exception.dart';
 
 class DioClient {
-  static const baseUrl = 'http://192.168.0.129:3333';
+  static const baseUrl = 'http://192.168.0.160:3333';
 
   static Dio getDio() {
     final dio = Dio();

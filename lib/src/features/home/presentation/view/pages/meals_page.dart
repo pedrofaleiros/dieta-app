@@ -33,7 +33,6 @@ class MealsPage extends StatelessWidget {
       actions: [
         IconButton(
           tooltip: 'Adicionar refeição',
-          // onPressed: () => context.read<AuthViewModel>().logout(),
           onPressed: () {
             Navigator.pushNamed(context, CreateMealPage.routeName);
           },
@@ -41,7 +40,11 @@ class MealsPage extends StatelessWidget {
         ),
         IconButton(
           tooltip: 'Sair',
-          onPressed: () => context.read<AuthViewModel>().logout(),
+          onPressed: () {
+
+            context.read<MealViewmodel>().logout();
+            context.read<AuthViewModel>().logout();
+          },
           icon: const Icon(
             Icons.logout,
           ),

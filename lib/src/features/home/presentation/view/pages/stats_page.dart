@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:macros_app/src/features/home/presentation/view/pages/foods_page.dart';
 import 'package:macros_app/src/features/home/presentation/view/widgets/stats_top_widget.dart';
 
 class StatsPage extends StatelessWidget {
@@ -20,6 +21,12 @@ class StatsPage extends StatelessWidget {
       body: Column(
         children: [
           StatsTopWidget(),
+          TextButton(
+            onPressed: () {
+              Navigator.pushNamed(context, FoodsPage.routeName);
+            },
+            child: Text('Ver alimentos'),
+          ),
         ],
       ),
     );

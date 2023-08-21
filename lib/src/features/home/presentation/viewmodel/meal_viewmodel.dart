@@ -12,12 +12,18 @@ abstract class _MealViewmodelBase with Store {
   final _usecase = MealUsecase();
   String? _userToken;
 
+
   @observable
   bool isLoading = false;
 
   @observable
   ObservableList<MealModel> meals = <MealModel>[].asObservable();
 
+  @action
+  void logout(){
+    _userToken = null;
+    meals.clear();
+  }
   @action
   Future<void> addFoodToMeal(
     String mealId,
@@ -141,8 +147,8 @@ abstract class _MealViewmodelBase with Store {
     }
 
     return {
-      "Carboidratos": carb,
       "Proteinas": prot,
+      "Carboidratos": carb,
       "Gorduras": fats,
     };
   }

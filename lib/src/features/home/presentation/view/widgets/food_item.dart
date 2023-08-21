@@ -55,10 +55,10 @@ class FoodItem extends StatelessWidget {
       background: _dismissBackground(context),
       child: Column(
         children: [
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Padding(
             padding:
-                const EdgeInsets.only(left: 8.0, right: 8, top: 0, bottom: 0),
+                const EdgeInsets.only(left: 8.0, right: 8, top: 0, bottom: 4),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
